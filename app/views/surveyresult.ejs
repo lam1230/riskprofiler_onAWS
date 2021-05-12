@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/surveystyle.css" media="screen" />
+    </head>
+    <body>
+        <h2> Australia has the highest incidence of melanoma in the world. 
+            Based on your personal risk factors, the likelihood that your body will induce melanoma is <%= vote13%>.</h2>
+        <div id='result'>
+        <h4> Survey Results: </h4>
+        <span>Age: <%= age[vote11]%></span><br/>
+        <span>Gender: <%= gender[vote12]%></span><br/>
+        <span>Regions: <%= regions[vote]%></span><br/>
+        <span>Latitude: <%= latitude[vote1]%></span><br/>
+        <span>Hair color: <%= hairColour[vote2]%></span><br/>
+        <span>Skin type: <%= skinType[vote3]%></span><br/>
+        <span>Skin cancer: <%= skinCancer[vote4]%></span><br/>
+        <span>Family history of melanoma: <%= familyHistory[vote5]%></span><br/>
+        <span>Personal history of melanoma: <%= personalHistory[vote6]%></span><br/>
+        <span>History of severe sunburns: <%= sunburns[vote7]%></span><br/>
+        <span>Eye color: <%= eyeColour[vote8]%></span><br/>
+        <span>Number of moles: <%= moles[vote9]%></span><br/>
+        <span>Number of freckles: <%= freckles[vote10]%></span><br/>
+        </div>
+        <div id='result'>
+            <h4> How to prevent melanoma risk？ </h4>
+            <img src="/images/reference1.png" width="700"/><br/>
+            <h4>Information and conditions about melanoma risk estimation:</h4>
+
+            <p>Your personal melanoma risk provides an estimation of your risk of developing a first primary 
+                invasive melanoma during the rest of your life. It is based on the best available information, however these 
+                risk prediction tools are the subject of ongoing research and will continue to be refined. The risks for each factor 
+                that were selected to calculate your personal melanoma risk contain some uncertainty. This means that your actual personal 
+                risk could be different from your personal risk estimate. If your personal risk factors change,for example if you develop new skin cancers or experience 
+                a change in family history then your personal risk estimate may also change.</p><br> 
+
+            <p> Melanoma is a dangerous type of skin cancer. Your personal melanoma risk does not include your risk of developing melanoma in situ or 
+                other types of skin cancer, including basal cell carcinoma (BCC) and squamous cell carcinoma (SCC). Some risk factors, such as immunosuppression, 
+                are not included in the risk calculation given the small number of studies available from which to draw conclusions and the limited population for whom they are relevant. 
+                Your risk estimate is also based on living in Australia, so may be less accurate for people who have lived overseas.</p><br>
+
+            <p>Anyone is at risk of developing melanoma, even if you receive a low-risk estimate. Not everyone with higher than average 
+                risk will develop melanoma, and some people at lower than average risk will still develop melanoma. Being aware of your 
+                risk is important, as it is the first step in taking precautions to reduce your risk.</p><br>
+
+            <p>Your personal risk estimate is not intended to be used as a substitute for your doctor's advice. 
+                It is highly recommended that you discuss your personal risk factors and the results of your risk assessment 
+                with your health care professional. If you have any questions or concerns about your skin, particularly if you 
+                have noticed any changes, please seek advice from your doctor.</p><br>
+
+
+    </body>
+</html>

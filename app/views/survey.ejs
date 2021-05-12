@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/surveystyle.css" media="screen" />
+	</head>
+	<!-- <script type="text/javascript">
+        document.getElementById("continue").onclick = function () {
+            location.href = "www.baidu.com";
+        };
+    </script> -->
+	<!-- <script>
+		function info() {
+		  alert("To use melanoma risk prediction, you must agree to the following terms \n conditions and carefully review the introduction about melanoma.");
+		}
+		</script> -->
+		<!-- <button onclick="info()">Information about risk profiler</button> -->
+	<body>
+		<h2>Welcome to the Risk Profiler</h2>
+		<img src="/images/intro.png" class="center"/><br/>
+		<!-- <button id="continue" class="float-left submit-button" >continue</button> -->
+		<form method = "POST" action="survey" >
+			<fieldset>
+				<legend>Risk Profiler Survey</legend>
+
+				<!-- BREAK -->
+				<h4>Your Name: <input type="text" name="voteName" placeholder="Enter your name..." required></h4>
+
+				<h4>1. Your Age:</h4>
+				<% for (var i = 0; i<age.length;i++){%>
+				<label>
+					<input type="radio" name="vote11" value= <%= i%> />
+					<%= age[i]%>
+				</label> <br/>
+				<% } %>
+				<!-- BREAK -->
+				
+				<!-- BREAK -->
+
+				<h4>2. Your Gender:</h4>
+				<% for (var i = 0; i<gender.length;i++){%>
+				<label>
+					<input type="radio" name="vote12" value= <%= i%> />
+					<%= gender[i]%>
+				</label> <br/>
+				<% } %>
+				<!-- BREAK -->
+				
+				<!-- BREAK -->
+
+				<h4>3. Regions:</h4>
+				<% for (var i = 0; i<regions.length;i++){%>
+				<label>
+					<input type="radio" name="vote" value= <%= i%> />
+					<%= regions[i]%>
+				</label> <br/>
+				<% } %>
+				<!-- BREAK -->
+				<h4>4. In which latitude zone have you spent most of your life?</h4>
+				<img src="/images/latitude.jpeg" class="center"/><br/>
+				<% for (var i = 0; i<latitude.length;i++){%>
+				<label>
+					<input type="radio" name="vote1" value= <%= i%> />
+					<%= latitude[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>5. Natural hair colour at age 18?</h4>
+				<h5>There is a considerable correlation between hair color, 
+					eye color and skin color. Among them, hair color is the most 
+					accurate assessment of the risk of melanoma. Especially red hair is a 
+					representative risk factor.</h5>
+				<% for (var i = 0; i<hairColour.length;i++){%>
+				<label>
+					<input type="radio" name="vote2" value= <%= i%> />
+					<%= hairColour[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>6. What is your skin type?</h4>
+				<img src="/images/skintype2.png" class="center"/><br/>
+				<% for (var i = 0; i<skinType.length;i++){%>
+				<label>
+					<input type="radio" name="vote3" value= <%= i%> />
+					<%= skinType[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>7. Have you ever had a non-melanoma skin cancer?</h4>
+				<h5>This includes basal cell carcinoma (BCC), 
+					squamous cell carcinoma (SCC), Bowen disease or Merkel cell 
+					carcinoma.</h5>
+				<% for (var i = 0; i<skinCancer.length;i++){%>
+				<label>
+					<input type="radio" name="vote4" value= <%= i%> />
+					<%= skinCancer[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>8. Have any family history of melanoma?</h4>
+				<h5>
+					Explanation :This includes parents, siblings or children.
+					 Family history is a complex risk factor for melanoma. According 
+					 to research, people with a family history of melanoma have an 
+					 approximately two-fold increase in risk of melanoma.
+				</h5>
+				<% for (var i = 0; i<familyHistory.length;i++){%>
+				<label>
+					<input type="radio" name="vote5" value= <%= i%> />
+					<%= familyHistory[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>9. Have you any Personal history of melanoma?</h4>
+				<h5>
+					It is important to note that if you have had melanoma 
+					in the past, this risk model cannot help you estimate 
+					your risk of developing other diseases (i.e. tumor spread) 
+					from this melanoma. It will only help you calculate the risk 
+					of inducing new melanoma.
+				</h5>
+				<% for (var i = 0; i<personalHistory.length;i++){%>
+				<label>
+					<input type="radio" name="vote6" value= <%= i%> />
+					<%= personalHistory[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>10. Any history of severe sunburns?</h4>
+				<% for (var i = 0; i<sunburns.length;i++){%>
+				<label>
+					<input type="radio" name="vote7" value= <%= i%> />
+					<%= sunburns[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>11. What is your eye color?</h4>
+				<% for (var i = 0; i<eyeColour.length;i++){%>
+				<label>
+					<input type="radio" name="vote8" value= <%= i%> />
+					<%= eyeColour[i]%>
+				</label> <br />
+				<% } %>
+				<!-- BREAK -->
+				<h4>12. How many moles do you have approximately?</h4>
+				<h5>
+					Moles are small brown or black spots on the skin. 
+					Moles usually form before the age of 20 and are usually 
+					raised or flat in shape. Compared with freckles, the difference 
+					is that moles do not change their appearance even under strong 
+					light. Normally, the number of moles will increase in childhood 
+					and decrease in early adulthood. However, these factors may be 
+					confused with freckles or other lesions. Therefore, we recommend 
+					that you go to your doctor to evaluate the risk factors.
+				</h5>
+				<img src="/images/moles1.jpeg" class="center"/><br/>
+				<% for (var i = 0; i<moles.length;i++){%>
+				<label>
+					<input type="radio" name="vote9" value= <%= i%> />
+					<%= moles[i]%>
+				</label> <br />
+				<% } %>
+				<!-- <h5>Image Upload</h5>
+				<input type="file" name="file" /><br /><br /> -->
+				<!-- BREAK -->
+				<label for="image">Upload Image</label>
+                <input type="file" id="image"
+                       name="image" value="" required>
+				<h4>13. How many freckles are on your body approximately?</h4>
+				<% for (var i = 0; i<freckles.length;i++){%>
+				<label>
+					<input type="radio" name="vote10" value= <%= i%> />
+					<%= freckles[i]%>
+				</label> <br />
+				<% } %>
+				<br />
+				<input type = "submit" value = "Submit" />
+				<input type = "reset" value = "Clear" />
+			</fieldset>
+		</form>
+	</body>
+</html>
