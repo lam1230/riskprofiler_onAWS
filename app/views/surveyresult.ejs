@@ -6,7 +6,19 @@
     </head>
     <body>
         <h2> Australia has the highest incidence of melanoma in the world. 
-            Based on your personal risk factors, the likelihood that your body will induce melanoma is <%= vote13%>.</h2>
+            Based on your personal risk factors, the likelihood that your body will induce melanoma is <%= vote13%> .
+            <form method = "GET" action="survey" >
+                <button>Back to home page</button></form>
+        </h2><br>
+            <h5 id='riskScale'>Your previous results are:
+                
+                    <% newArray.forEach(function(risk){ %>
+                        <%= risk %>
+                    <%  }); %>
+                
+            </h5><br><br>
+            <h5 id='riskScale'>Low Risk: 7.00 - 11.90  Medium Risk: 11.91 - 13.94   High Risk: 13.95 - 15.17</h5>
+
         <div id='result'>
         <h4> Survey Results: </h4>
         <span>Age: <%= age[vote11]%></span><br/>
@@ -22,6 +34,9 @@
         <span>Eye color: <%= eyeColour[vote8]%></span><br/>
         <span>Number of moles: <%= moles[vote9]%></span><br/>
         <span>Number of freckles: <%= freckles[vote10]%></span><br/>
+        <span>SPF: <%= SPF%></span><br/>
+
+
         </div>
         <div id='result'>
             <h4> How to prevent melanoma risk？ </h4>
