@@ -1,6 +1,6 @@
 /**
  * survey.server.controller.js
- * 
+ *
  * This controller module exposes two methods:
  *  - showForm is used for displaying the form
  *  - showResult is used for showing the results
@@ -8,6 +8,8 @@
  */
 
 var express = require('express');
+var assert = require('assert');
+const { copyFile } = require('fs');
 
 module.exports.showForm = function(req, res) {
     regions = req.app.locals.regions;
@@ -43,6 +45,9 @@ module.exports.showForm = function(req, res) {
 
     userName = req.app.locals.userName;
     res.render('survey.ejs', {userName: userName});
+
+    SPF = req.app.locals.SPF;
+    res.render('survey.ejs', {SPF: SPF});
 };
 
 
@@ -68,11 +73,12 @@ module.exports.showResult = function(req, res) {
     var voteIdx12 = req.body.vote12;
 
     var voteIdxName = req.body.voteName;
+    var voteIdxSPF = req.body.voteSPF;
 
 
     // 'req.app.locals' is used to share application scope variables from main file (server.js).
     // Each request object has a reference to the current running express application: req.app
-    // This means that 'app.locals' can be used to store properties that are local variables  
+    // This means that 'app.locals' can be used to store properties that are local variables
     // within the application (application scope data), you can refer to server.js and compare
     var regions = req.app.locals.regions;
     var latitude = req.app.locals.latitude;
@@ -91,9 +97,7 @@ module.exports.showResult = function(req, res) {
     var risk_score = req.app.locals.risk_score;
 
     var userName = req.app.locals.userName;
-    // var nameSchema = new mongoose.Schema({
-    //     userName: String
-    //   });
+    var SPF = req.app.locals.SPF;
 
 
     var surveyresults = req.app.locals.surveyresults;
@@ -109,6 +113,9 @@ module.exports.showResult = function(req, res) {
     var riskScore = 0;
     var userName1 ='';
 
+    // let previousRisk = [];
+    var newArray = ['123'];
+
     // get session
     sess = req.session;
 
@@ -123,7 +130,7 @@ module.exports.showResult = function(req, res) {
 
         // increment the vote for the selected phone
         surveyresults[gender][voteIdx]++;
-    
+
 
         if(skinType[voteIdx3] === "Skin Type I"){
             skin_type_c = 2.09;
@@ -131,14 +138,14 @@ module.exports.showResult = function(req, res) {
             skin_type_c = 1.84;
         }else if(skinType[voteIdx3] === "Skin Type III"){
             skin_type_c = 1.77;
-        }else 
+        }else
         {
             skin_type_c = 1;
         }
-        
+
         if(sunburns[voteIdx7] === "None"){
             sunburn_his_c = 1;
-        }else 
+        }else
         {
             sunburn_his_c = 1.28;
         }
@@ -174,7 +181,7 @@ module.exports.showResult = function(req, res) {
         {
             eye_color_c = 1.62;
         }
-        
+
         if (moles[voteIdx9] === "None")
         {
             mole_c = 1;
@@ -195,68 +202,120 @@ module.exports.showResult = function(req, res) {
         {
             freckle_c = 2.32;
         }
-            
+
         riskScore = freckle_c + mole_c + eye_color_c + family_history_c +
          hair_color_c + sunburn_his_c + skin_type_c;
+         var numRisk = riskScore.toFixed(2);
 
-        res.render('surveyresult.ejs', {regions: regions, surveyresults: surveyresults, vote: voteIdx,latitude: latitude,vote1: voteIdx1
-            ,hairColour: hairColour,vote2: voteIdx2,skinType: skinType,vote3: voteIdx3,skinCancer: skinCancer,vote4: voteIdx4,familyHistory: familyHistory,vote5: voteIdx5
-            ,personalHistory: personalHistory,vote6: voteIdx6,sunburns: sunburns,vote7: voteIdx7,eyeColour: eyeColour,vote8: voteIdx8
-            ,moles: moles,vote9: voteIdx9,freckles: freckles,vote10: voteIdx10,age: age,vote11: voteIdx11,gender1: gender1,vote12: voteIdx12
-            ,risk_score: risk_score,vote13: riskScore,userName: userName,vote14: userName1});
+
 
             const mongodb = require('mongodb')
             const MongoClient = mongodb.MongoClient
-            
+            const cloudConnectionURL = 'mongodb+srv://henry-admin:henry123456@cluster0.x8v4a.mongodb.net/riskprofiler';
+
             const connectionURL = 'mongodb://127.0.0.1:27017'
             const databaseName = 'riskprofiler'
-            
-            MongoClient.connect(connectionURL,{useUnifiedTopology: true}, (error, client) => {
+
+            MongoClient.connect(cloudConnectionURL,{useUnifiedTopology: true}, (error, client) => {
                 if(error) {
                     return console.log('Unable to connet to DB')
                 }
                 // console.log('Connected successfully!!!')
                 const db = client.db(databaseName)
                 console.log('Connected successfully!!!')
-                // if(db.collection('inputData').findOne({_id:voteIdxName},(err, res) => {
-                //     if(err) {
-                //         return console.log('no find')
-                //     }
-                //     // console.log(res.ops)
-                //     console.log('find successfully!!!')
-                // })){}
 
-                // if(db.collection('inputData').find({_id:voteIdxName})){
-                //     console.log('find successfully!!!')
-                // }else{
-                //     console.log('no find!!!')
-                // }
+                var query = { userName:voteIdxName};
 
-                db.collection('inputData').insertOne({
-                    // _id:voteIdxName,
-                    userName:voteIdxName,
-                    riskFactor:[],
-                    age:age[voteIdx11],
-                    gender:gender1[voteIdx12],
-                    regions:regions[voteIdx],
-                    latitude:latitude[voteIdx1],
-                    hairColour:hairColour[voteIdx2],
-                    skinType:skinType[voteIdx3],
-                    skinCancer:skinCancer[voteIdx4],
-                    familyHistory:familyHistory[voteIdx5],
-                    personalHistory:personalHistory[voteIdx6],
-                    sunburns:sunburns[voteIdx7],
-                    eyeColour:eyeColour[voteIdx8],
-                    moles:moles[voteIdx9],
-                    freckles:freckles[voteIdx10],
-                    riskScore:riskScore
-                },(err, res) => {
-                    if(err) {
-                        return console.log('Unable to connet to DB')
+                db.collection("inputData").find(query).toArray((err,response) => {
+                    if(err){
+                        throw err;
                     }
-                    // console.log(res.ops)
-                    console.log('input successfully!!!')
+                    if(response && response.length){
+                db.collection('inputData').findOneAndUpdate({
+                    userName:voteIdxName
+                },{
+                    $push:{
+                        riskFactor:{age:age[voteIdx11],
+                            gender:gender1[voteIdx12],
+                            regions:regions[voteIdx],
+                            latitude:latitude[voteIdx1],
+                            hairColour:hairColour[voteIdx2],
+                            skinType:skinType[voteIdx3],
+                            skinCancer:skinCancer[voteIdx4],
+                            familyHistory:familyHistory[voteIdx5],
+                            personalHistory:personalHistory[voteIdx6],
+                            sunburns:sunburns[voteIdx7],
+                            eyeColour:eyeColour[voteIdx8],
+                            moles:moles[voteIdx9],
+                            freckles:freckles[voteIdx10],
+                            SPF:voteIdxSPF,
+                            riskScore:numRisk},
+                            allRiskScore:{riskScore:numRisk}
+                    }
                 })
+                console.log('Update and insert risk factor successfully!!!');
+                    }
+                    else{
+
+                    db.collection('inputData').insertOne({
+                        // _id:voteIdxName,
+                        userName:voteIdxName,
+                        riskFactor:[{age:age[voteIdx11],
+                            gender:gender1[voteIdx12],
+                            regions:regions[voteIdx],
+                            latitude:latitude[voteIdx1],
+                            hairColour:hairColour[voteIdx2],
+                            skinType:skinType[voteIdx3],
+                            skinCancer:skinCancer[voteIdx4],
+                            familyHistory:familyHistory[voteIdx5],
+                            personalHistory:personalHistory[voteIdx6],
+                            sunburns:sunburns[voteIdx7],
+                            eyeColour:eyeColour[voteIdx8],
+                            moles:moles[voteIdx9],
+                            freckles:freckles[voteIdx10],
+                            SPF:voteIdxSPF,
+                            riskScore:numRisk}],
+                            allRiskScore:[{riskScore:numRisk}]
+                    },(err, res) => {
+                        if(err) {
+                            return console.log('Unable to connet to DB')
+                        }
+                        // console.log(res.ops)
+                        console.log('input successfully!!!')
+                    })
+                    }
+                })
+                db.collection('inputData').distinct(
+                    "allRiskScore.riskScore",
+                    query, // query object
+                    (function(err, docs){
+                         if(err){
+                             return console.log(err);
+                         }
+                         if(docs){
+                            //  console.log(docs);
+                             res.render('surveyresult.ejs', {regions: regions, surveyresults: surveyresults, vote: voteIdx,latitude: latitude,vote1: voteIdx1
+                                ,hairColour: hairColour,vote2: voteIdx2,skinType: skinType,vote3: voteIdx3,skinCancer: skinCancer,vote4: voteIdx4,familyHistory: familyHistory,vote5: voteIdx5
+                                ,personalHistory: personalHistory,vote6: voteIdx6,sunburns: sunburns,vote7: voteIdx7,eyeColour: eyeColour,vote8: voteIdx8
+                                ,moles: moles,vote9: voteIdx9,freckles: freckles,vote10: voteIdx10,age: age,vote11: voteIdx11,gender1: gender1,vote12: voteIdx12
+                                ,risk_score: risk_score,vote13: numRisk,userName: userName,vote14: userName1
+                                ,SPF:voteIdxSPF
+                                ,newArray:docs
+                            });
+                         }
+                    })
+                 );
+
             })
+
+            // res.render('surveyresult.ejs', {regions: regions, surveyresults: surveyresults, vote: voteIdx,latitude: latitude,vote1: voteIdx1
+            //     ,hairColour: hairColour,vote2: voteIdx2,skinType: skinType,vote3: voteIdx3,skinCancer: skinCancer,vote4: voteIdx4,familyHistory: familyHistory,vote5: voteIdx5
+            //     ,personalHistory: personalHistory,vote6: voteIdx6,sunburns: sunburns,vote7: voteIdx7,eyeColour: eyeColour,vote8: voteIdx8
+            //     ,moles: moles,vote9: voteIdx9,freckles: freckles,vote10: voteIdx10,age: age,vote11: voteIdx11,gender1: gender1,vote12: voteIdx12
+            //     ,risk_score: risk_score,vote13: riskScore,userName: userName,vote14: userName1
+            //     ,SPF:voteIdxSPF
+            //     ,newArray:newArray
+            // });
+            // console.log(newArray)
     }
 };
