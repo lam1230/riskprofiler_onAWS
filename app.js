@@ -12,63 +12,6 @@ app.locals.surveyresults = {
     fp: [0, 0, 0, 0], mp: [0, 0, 0, 0]
 };
 
-// const multer = require('multer');
-// const fileStorageEngine = multer.diskStorage({
-//     destination:(req,file,cb)=>{
-//         cb(null,'./images')
-//     },
-//     filename:(req,file,cb)=>{
-//         cb(null,Date.now() + '--' +file.originalname)
-//     }
-// });
-// const upload = multer({storage: fileStorageEngine});
-// var multer = require('multer');
- 
-// var storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'uploads')
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, file.fieldname + '-' + Date.now())
-//     }
-// });
- 
-// var upload = multer({ storage: storage });
-// var imgModel = require('./model');
-
-// app.get('/', (req, res) => {
-//     imgModel.find({}, (err, items) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(500).send('An error occurred', err);
-//         }
-//         else {
-//             res.render('imagesPage', { items: items });
-//         }
-//     });
-// });
-
-// app.post('/', upload.single('image'), (req, res, next) => {
- 
-//     var obj = {
-//         name: req.body.name,
-//         desc: req.body.desc,
-//         img: {
-//             data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-//             contentType: 'image/png'
-//         }
-//     }
-//     imgModel.create(obj, (err, item) => {
-//         if (err) {
-//             console.log(err);
-//         }
-//         else {
-//             // item.save();
-//             res.redirect('/');
-//         }
-//     });
-// });
-
 app.locals.age = ['0-10', '11-20', '21-30','31-40', '41-50', '51-60','61-70','71-80', '81-90', '91-100', 'Above 100'];
 app.locals.gender = ['Male', 'Female'];
 app.locals.latitude = ['North', 'South', 'Central'];
@@ -100,48 +43,11 @@ app.use(session({
 
 app.use('/', surveyRouter);
 
-// app.post("/single",upload.single('image'),(req,res)=>{
-//     console.log(req.file);
-//     res.send("upload success");
-// });
 
 app.listen(process.env.PORT || 3000, function() {
     console.log('survey app is listening on port 3000!');
 });
 
 module.exports = app
-//database
-// const mongodb = require('mongodb')
-// const MongoClient = mongodb.MongoClient
 
-// const connectionURL = 'mongodb://127.0.0.1:27017'
-// const databaseName = 'riskprofiler'
 
-// MongoClient.connect(connectionURL,{useUnifiedTopology: true}, (error, client) => {
-//     if(error) {
-//         return console.log('Unable to connet to DB')
-//     }
-//     // console.log('Connected successfully!!!')
-//     const db = client.db(databaseName)
-//     console.log('Connected successfully!!!')
-//     db.collection('inputData').insertOne({
-//         age: app.locals.age,
-//         gender:'Male',
-//         latitude:'North',
-//         hairColour:'Black',
-//         skinType:'Skin Type I',
-//         skinCancer:'Yes',
-//         familyHistory:'Yes',
-//         personalHistory:'Yes',
-//         sunburns:'1-2burns',
-//         eyeColour:'Dark',
-//         moles:'None',
-//         freckles:'None'
-//     },(err, res) => {
-//         if(err) {
-//             return console.log('Unable to connet to DB')
-//         }
-//         // console.log(res.ops)
-//         console.log('input successfully!!!')
-//     })
-// })
