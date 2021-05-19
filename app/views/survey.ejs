@@ -3,17 +3,6 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/surveystyle.css" media="screen" />
 	</head>
-	<!-- <script type="text/javascript">
-        document.getElementById("continue").onclick = function () {
-            location.href = "www.baidu.com";
-        };
-    </script> -->
-	<!-- <script>
-		function info() {
-		  alert("To use melanoma risk prediction, you must agree to the following terms \n conditions and carefully review the introduction about melanoma.");
-		}
-		</script> -->
-		<!-- <button onclick="info()">Information about risk profiler</button> -->
 	<body>
 		<h2>Welcome to the Risk Profiler</h2>
 		<img src="/images/intro.png" class="center"/><br/>
@@ -24,7 +13,6 @@
 
 				<!-- BREAK -->
 				<h4>Your Name: <input type="text" name="voteName" placeholder="Enter your name..." required></h4>
-
 				<h4>1. Your Age:</h4>
 				<% for (var i = 0; i<age.length;i++){%>
 				<label>
@@ -162,9 +150,9 @@
 				<!-- <h5>Image Upload</h5>
 				<input type="file" name="file" /><br /><br /> -->
 				<!-- BREAK -->
-				<label for="image">Upload Image</label>
+				<!-- <label for="image">Upload Image</label>
                 <input type="file" id="image"
-                       name="image" value="" required>
+                       name="image" value="" required> -->
 				<h4>13. How many freckles are on your body approximately?</h4>
 				<% for (var i = 0; i<freckles.length;i++){%>
 				<label>
@@ -172,6 +160,8 @@
 					<%= freckles[i]%>
 				</label> <br />
 				<% } %>
+
+				<h4>SPF: <input type="text" name="voteSPF" placeholder="Enter the SPF..." ></h4>
 				<br />
 				<input type = "submit" value = "Submit" />
 				<input type = "reset" value = "Clear" />
