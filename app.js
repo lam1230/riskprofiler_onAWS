@@ -13,7 +13,7 @@ app.locals.surveyresults = {
 };
 
 app.locals.age = ['0-10', '11-20', '21-30','31-40', '41-50', '51-60','61-70','71-80', '81-90', '91-100', 'Above 100'];
-app.locals.gender = ['Male', 'Female'];
+app.locals.gender = ['Male', 'Female', 'Others'];
 app.locals.latitude = ['North', 'South', 'Central'];
 app.locals.hairColour = ['Black', 'Dark', 'Brown','Light Brown', 'Blond', 'Red'];
 app.locals.skinType = ['Skin Type I', 'Skin Type II', 'Skin Type III','Skin Type IV', 'Skin Type V', 'Skin Type VI'];
