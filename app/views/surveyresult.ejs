@@ -3,6 +3,16 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="css/surveystyle.css" media="screen" />
+                  <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+          <script src="tableau.js"></script>
+          <script>
+            function initViz() {
+                var containerDiv = document.getElementById("tableauViz"),
+                url = "https://public.tableau.com/views/UVdoseovertime/Sheet2?:language=zh-Hans&:display_count=y&publish=yes&:origin=viz_share_link";
+
+                var viz = new tableau.Viz(containerDiv, url);
+            }
+          </script>
     </head>
     <body>
         <h2> Australia has the highest incidence of melanoma in the world. 
@@ -38,6 +48,10 @@
 
 
         </div>
+        
+                <button onclick="initViz()">click1</button><br>
+        <div id = "tableauViz"></div>
+        
         <div id='result'>
             <h4> How to prevent melanoma risk？ </h4>
             <img src="/images/reference1.png" width="700"/><br/>
