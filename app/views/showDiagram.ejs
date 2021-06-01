@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+    <script src="tableau.js"></script>
+    <script src="index.js"></script>
+    <script>
+    function initViz() {
+        var containerDiv = document.getElementById("tableauViz"),
+        url = "https://public.tableau.com/views/UVdoseovertime/Sheet23?:language=en-US&:display_count=n&:origin=viz_share_link";
+        var viz = new tableau.Viz(containerDiv, url);
+    }
+
+    </script>
+        <style>
+            svg {
+              border: 1px solid lightgrey;
+            }
+          </style>
+    
+</head>
+<body>
+    <button onclick="initViz()">click1</button><br>
+    <div id = "tableauViz"></div>
+    <div id="test"></div>
+    <div id="test1"></div>
+
+
+    <script >
+        var data = [{
+            x: JSON.parse('<%-JSON.stringify(array1)%>'),
+            y: JSON.parse('<%-JSON.stringify(array2)%>') }];
+        var layout = {font: {size: 18}};
+        var config = {responsive: true};
+        TESTER = document.getElementById('test');
+        Plotly.newPlot(TESTER, data, layout, config);
+
+     </script>
+         <script >
+            var data1 = [{
+                x: JSON.parse('<%-JSON.stringify(array1)%>'),
+                y: JSON.parse('<%-JSON.stringify(array3)%>') }];
+            var layout = {font: {size: 18}};
+            var config = {responsive: true};
+            TESTER = document.getElementById('test1');
+            Plotly.newPlot(TESTER, data1, layout, config);
+         </script>
+          <!-- <%= array1%><br>
+          <%= array2%>
+
+          <% for (var i = 0; i<csvData.length;i++){%>
+            <%= csvData[i]%> <br/>
+        <% } %> -->
+</body>
+</html>
+

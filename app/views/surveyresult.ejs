@@ -3,22 +3,11 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="css/surveystyle.css" media="screen" />
-                  <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
-          <script src="tableau.js"></script>
-          <script>
-            function initViz() {
-                var containerDiv = document.getElementById("tableauViz"),
-                url = "https://public.tableau.com/views/UVdoseovertime/Sheet2?:language=zh-Hans&:display_count=y&publish=yes&:origin=viz_share_link";
-
-                var viz = new tableau.Viz(containerDiv, url);
-            }
-          </script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     </head>
     <body>
         <h2> Australia has the highest incidence of melanoma in the world. 
             Based on your personal risk factors, the likelihood that your body will induce melanoma is <%= vote13%> .
-            <form method = "GET" action="/" >
-                <button>Back to home page</button></form>
         </h2><br>
             <h5 id='riskScale'>Your previous results are:
                 
@@ -45,13 +34,72 @@
         <span>Number of moles: <%= moles[vote9]%></span><br/>
         <span>Number of freckles: <%= freckles[vote10]%></span><br/>
         <span>SPF: <%= SPF%></span><br/>
-
-
         </div>
-        
-                <button onclick="initViz()">click1</button><br>
-        <div id = "tableauViz"></div>
-        
+
+        <h5>According to your SPF: <%= SPF%>, your historical sunburn is <%= sunburns[vote7]%> and the highest number of sunburn will be <%= parseInt(array2[array2.length - 1])%> after <%= array1[array1.length - 1]%>.</h5>
+        <div id="test"></div>
+        <h5>According to your SPF: <%= SPF%>, your risk is <%= vote13%> for now and the highest risk will be <%= parseFloat(array3[array3.length - 1]).toFixed(2)%> after <%= array1[array1.length - 1]%>.</h5>
+        <div id="test1"></div>
+        <script >
+            var data = [{
+                x: JSON.parse('<%-JSON.stringify(array1)%>'),
+                y: JSON.parse('<%-JSON.stringify(array2)%>') }];
+                var layout ={ title:{ text:'Prediction For Sunburn', font:{ size: 18},},
+                xaxis: {title: {text: 'Duration of exposure to UV light',font: {family: 'Courier New, monospace',size: 18,
+                color: '#7f7f7f'}}},yaxis: {title: {text: 'Amount of sunburn',font: {family: 'Courier New, monospace',size: 18,
+                color: '#7f7f7f'}}},}
+
+            // var layout = {font: {size: 18}};
+            var config = {responsive: true};
+            TESTER = document.getElementById('test');
+            Plotly.newPlot(TESTER, data, layout, config);
+
+            var cnt = 0;
+            var interval = setInterval(function() {
+                cnt++;
+                if(cnt > 10) {
+                    Plotly.relayout('test',
+                    {
+                        'xaxis.range': [cnt - 10, cnt]
+                    })
+                }
+                    Plotly.extendTraces('test', {
+                        y: [[JSON.parse('<%-JSON.stringify(array2)%>')]]
+                }, [0])
+
+                if(++cnt === 220) clearInterval(interval);
+                }, 300);
+                
+         </script>
+             <script >
+                var data1 = [{
+                    x: JSON.parse('<%-JSON.stringify(array1)%>'),
+                    y: JSON.parse('<%-JSON.stringify(array3)%>') }];
+                    // var layout ={ title:{ text:'Prediction For Sunburn', font:{ size: 18},},}
+                var layout ={ title:{ text:'Prediction For Risk Score', font:{ size: 18},},
+                xaxis: {title: {text: 'Duration of exposure to UV light',font: {family: 'Courier New, monospace',size: 18,
+                color: '#7f7f7f'}}},yaxis: {title: {text: 'Risk score',font: {family: 'Courier New, monospace',size: 18,
+                color: '#7f7f7f'}}},}                
+                var config = {responsive: true};
+                TESTER = document.getElementById('test1');
+                Plotly.newPlot(TESTER, data1, layout, config);
+
+                var cnt1 = 0;
+            var interval1 = setInterval(function() {
+                cnt1++;
+                if(cnt1 > 10) {
+                    Plotly.relayout('test1',
+                    {
+                        'xaxis.range': [cnt1 - 10, cnt1]
+                    })
+                }
+                    Plotly.extendTraces('test1', {
+                        y: [[JSON.parse('<%-JSON.stringify(array3)%>')]]
+                }, [0])
+
+                if(++cnt1 === 220) clearInterval(interval1);
+                }, 300);
+             </script>
         <div id='result'>
             <h4> How to prevent melanoma risk？ </h4>
             <img src="/images/reference1.png" width="700"/><br/>
@@ -78,6 +126,8 @@
                 with your health care professional. If you have any questions or concerns about your skin, particularly if you 
                 have noticed any changes, please seek advice from your doctor.</p><br>
 
-
+        </div>
+                    <form method = "GET" action="survey" >
+                <button class="center">Back to home page</button></form>
     </body>
 </html>

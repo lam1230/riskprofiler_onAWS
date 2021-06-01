@@ -2,18 +2,13 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-// var mongoose = require('mongoose');
 
 var surveyRouter = require('./app/routes/survey.server.routes');
-
+// surveyRouter(app);
 var app = express();
 app.locals.regions = ['NSW', 'VIC', 'Queensland', 'ACT','Tasmania', 'South Australia', 'Western Australia', 'North Territory'];
-app.locals.surveyresults = {
-    fp: [0, 0, 0, 0], mp: [0, 0, 0, 0]
-};
-
 app.locals.age = ['0-10', '11-20', '21-30','31-40', '41-50', '51-60','61-70','71-80', '81-90', '91-100', 'Above 100'];
-app.locals.gender = ['Male', 'Female', 'Others'];
+app.locals.gender = ['Male', 'Female','Others'];
 app.locals.latitude = ['North', 'South', 'Central'];
 app.locals.hairColour = ['Black', 'Dark', 'Brown','Light Brown', 'Blond', 'Red'];
 app.locals.skinType = ['Skin Type I', 'Skin Type II', 'Skin Type III','Skin Type IV', 'Skin Type V', 'Skin Type VI'];
@@ -30,6 +25,8 @@ app.set('views', path.join(__dirname, 'app/views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+
 
 // the session will expire in 60 seconds (60,000 milliseconds)
 // change this into 30 minutes after testing
@@ -44,10 +41,22 @@ app.use(session({
 app.use('/', surveyRouter);
 
 
+// const csvtojson = require('csvtojson')
+// const fs = require('fs')
+// const csvfilepath = "useful2.csv"
+
+// csvtojson()
+// .fromFile(csvfilepath)
+// .then((json)=>{
+//     // console.log(json)
+//     fs.writeFileSync("output.json",JSON.stringify(json),"utf-8",(err) => {
+//         if(err) console.log(err)
+//     })
+// })
+
 app.listen(process.env.PORT || 3000, function() {
     console.log('survey app is listening on port 3000!');
 });
 
 module.exports = app
-
 

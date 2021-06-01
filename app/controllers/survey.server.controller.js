@@ -7,9 +7,8 @@
  * The methods are not mapped to URL yet
  */
 
-var express = require('express');
-var assert = require('assert');
-const { copyFile } = require('fs');
+const { time } = require('console');
+
 
 module.exports.showForm = function(req, res) {
     regions = req.app.locals.regions;
@@ -34,31 +33,24 @@ module.exports.showForm = function(req, res) {
     res.render('survey.ejs', {moles: moles});
     freckles = req.app.locals.freckles;
     res.render('survey.ejs', {freckles: freckles});
-
     age = req.app.locals.age;
     res.render('survey.ejs', {age: age});
     gender = req.app.locals.gender;
     res.render('survey.ejs', {gender: gender});
-
     risk_score = req.app.locals.risk_score;
     res.render('survey.ejs', {risk_score: risk_score});
-
     userName = req.app.locals.userName;
     res.render('survey.ejs', {userName: userName});
-
     SPF = req.app.locals.SPF;
     res.render('survey.ejs', {SPF: SPF});
 };
 
 
 module.exports.showResult = function(req, res) {
-	// if gender == 0 then it's male (mp), else female (fp)
-	var gender = (req.body.gender == '0') ? 'mp' : 'fp';
 
     // get vote index
     var voteIdx = req.body.vote;
     var voteIdx1 = req.body.vote1;
-
     var voteIdx2 = req.body.vote2;
     var voteIdx3 = req.body.vote3;
     var voteIdx4 = req.body.vote4;
@@ -68,10 +60,8 @@ module.exports.showResult = function(req, res) {
     var voteIdx8 = req.body.vote8;
     var voteIdx9 = req.body.vote9;
     var voteIdx10 = req.body.vote10;
-
     var voteIdx11 = req.body.vote11;
     var voteIdx12 = req.body.vote12;
-
     var voteIdxName = req.body.voteName;
     var voteIdxSPF = req.body.voteSPF;
 
@@ -91,16 +81,13 @@ module.exports.showResult = function(req, res) {
     var eyeColour = req.app.locals.eyeColour;
     var moles = req.app.locals.moles;
     var freckles = req.app.locals.freckles;
-
     var age = req.app.locals.age;
     var gender1 = req.app.locals.gender;
     var risk_score = req.app.locals.risk_score;
-
     var userName = req.app.locals.userName;
     var SPF = req.app.locals.SPF;
 
 
-    var surveyresults = req.app.locals.surveyresults;
 
     //calculate risk score
     var freckle_c = 0;
@@ -113,41 +100,59 @@ module.exports.showResult = function(req, res) {
     var riskScore = 0;
     var userName1 ='';
 
-    // let previousRisk = [];
-    var newArray = ['123'];
+    var sunburnOnDiagram = 0;
+    var skinTypeIndex = 0;
+
+
 
     // get session
     sess = req.session;
 
-    if (sess && "vote" in sess) {
-        // if voted, use a different ejs file, you could copy "surveyresult.ejs" file and create
-        // "votedsurveyresult.ejs", then route the page into "votedsurveyresult.ejs" instead
-        res.render('votedsurveyresult.ejs', {regions: regions, surveyresults: surveyresults, vote: sess.vote});
-    } else {
         // set sess['vote'] to voteIdx
         sess.vote = voteIdx
         sess.vote1 = voteIdx1
 
-        // increment the vote for the selected phone
-        surveyresults[gender][voteIdx]++;
-
 
         if(skinType[voteIdx3] === "Skin Type I"){
             skin_type_c = 2.09;
+            skinTypeIndex = 1;
         }else if(skinType[voteIdx3] === "Skin Type II"){
             skin_type_c = 1.84;
+            skinTypeIndex = 1.25;
         }else if(skinType[voteIdx3] === "Skin Type III"){
             skin_type_c = 1.77;
+            skinTypeIndex = 1.5;
+        }else if(skinType[voteIdx3] === "Skin Type IV"){
+            skin_type_c = 1;
+            skinTypeIndex = 2.25;
+        }else if(skinType[voteIdx3] === "Skin Type V"){
+            skin_type_c = 1;
+            skinTypeIndex = 3;
         }else
         {
             skin_type_c = 1;
+            skinTypeIndex = 5;
         }
 
         if(sunburns[voteIdx7] === "None"){
             sunburn_his_c = 1;
-        }else
+        }else if (sunburns[voteIdx7] === "1-2burns")
         {
             sunburn_his_c = 1.28;
+            sunburnOnDiagram = 2;
+        }else if (sunburns[voteIdx7] === "3-5burns")
+        {
+            sunburn_his_c = 1.28;
+            sunburnOnDiagram = 4;
+        }else if (sunburns[voteIdx7] === "6-9burns")
+        {
+            sunburn_his_c = 1.28;
+            sunburnOnDiagram = 8;
+        }
+        else
+        {
+            sunburn_his_c = 1.28;
+            sunburnOnDiagram = 10;
         }
 
         if (hairColour[voteIdx2] === "Light Brown")
@@ -208,6 +213,55 @@ module.exports.showResult = function(req, res) {
          var numRisk = riskScore.toFixed(2);
 
 
+    var fs = require('fs'); 
+    var parse = require('csv-parse');
+    var csvData=[];
+    var array1 = []; // better to define using [] instead of new Array();
+    var array2 = [];
+    var array3 = [];
+    var spf = 1;
+    spf = req.body.voteSPF;
+
+    fs.createReadStream('useful.csv')
+        .pipe(parse({delimiter: ':'}))
+        .on('data', function(csvrow) {
+            // console.log(csvrow);
+            for (var i = 0; i < csvrow.length; i++) {
+                var split = csvrow[i].split(",");  // just split once
+                // xlabels.push((time/60).toFixed(0) + "mins");
+                array1.push((split[1]/60).toFixed(0) + "mins"); // before the dot
+                array2.push(split[2]); // after the dot
+                array3.push(split[2]); // after the dot
+                // console.log(array2);
+            }
+            //do something with csvrow
+            csvData.push(csvrow);        
+        })
+        .on('end',function() {
+            //sunburn 
+            for(var i =0;i<array2.length;i++){
+                //history sunburn is 5
+                // var x = 5; 
+                array2[i] = (parseFloat(array2[i]) / parseInt(spf))+ parseInt(sunburnOnDiagram);
+              }
+
+
+              //history risk to get the new risk
+              for(var i =0;i<array3.length;i++){
+                //history risk is 8.6
+                // var x = 8.6; 
+                array3[i] = (parseFloat(array3[i]) / (parseInt(skinTypeIndex) * parseInt(spf))) + parseFloat(numRisk);
+              }
+            //   console.log(array2);
+          //do something with csvData
+        //   console.log(csvData);
+        // console.log("array1", array1);
+        // console.log("array2", array2);
+        // res.render('showDiagram.ejs',{csvData:csvData,array1:array1,array2:array2,array3:array3});
+
+        });
+
+
 
             const mongodb = require('mongodb')
             const MongoClient = mongodb.MongoClient
@@ -254,6 +308,7 @@ module.exports.showResult = function(req, res) {
                     }
                 })
                 console.log('Update and insert risk factor successfully!!!');
+
                     }
                     else{
 
@@ -283,6 +338,7 @@ module.exports.showResult = function(req, res) {
                         // console.log(res.ops)
                         console.log('input successfully!!!')
                     })
+
                     }
                 })
                 db.collection('inputData').distinct(
@@ -294,28 +350,18 @@ module.exports.showResult = function(req, res) {
                          }
                          if(docs){
                             //  console.log(docs);
-                             res.render('surveyresult.ejs', {regions: regions, surveyresults: surveyresults, vote: voteIdx,latitude: latitude,vote1: voteIdx1
+                             res.render('surveyresult.ejs', {regions: regions,vote: voteIdx,latitude: latitude,vote1: voteIdx1
                                 ,hairColour: hairColour,vote2: voteIdx2,skinType: skinType,vote3: voteIdx3,skinCancer: skinCancer,vote4: voteIdx4,familyHistory: familyHistory,vote5: voteIdx5
                                 ,personalHistory: personalHistory,vote6: voteIdx6,sunburns: sunburns,vote7: voteIdx7,eyeColour: eyeColour,vote8: voteIdx8
                                 ,moles: moles,vote9: voteIdx9,freckles: freckles,vote10: voteIdx10,age: age,vote11: voteIdx11,gender1: gender1,vote12: voteIdx12
                                 ,risk_score: risk_score,vote13: numRisk,userName: userName,vote14: userName1
                                 ,SPF:voteIdxSPF
-                                ,newArray:docs
+                                ,newArray:docs,
+                                csvData:csvData,array1:array1,array2:array2,array3:array3
                             });
                          }
                     })
                  );
 
             })
-
-            // res.render('surveyresult.ejs', {regions: regions, surveyresults: surveyresults, vote: voteIdx,latitude: latitude,vote1: voteIdx1
-            //     ,hairColour: hairColour,vote2: voteIdx2,skinType: skinType,vote3: voteIdx3,skinCancer: skinCancer,vote4: voteIdx4,familyHistory: familyHistory,vote5: voteIdx5
-            //     ,personalHistory: personalHistory,vote6: voteIdx6,sunburns: sunburns,vote7: voteIdx7,eyeColour: eyeColour,vote8: voteIdx8
-            //     ,moles: moles,vote9: voteIdx9,freckles: freckles,vote10: voteIdx10,age: age,vote11: voteIdx11,gender1: gender1,vote12: voteIdx12
-            //     ,risk_score: risk_score,vote13: riskScore,userName: userName,vote14: userName1
-            //     ,SPF:voteIdxSPF
-            //     ,newArray:newArray
-            // });
-            // console.log(newArray)
-    }
 };

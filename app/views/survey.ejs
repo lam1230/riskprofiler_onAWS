@@ -6,12 +6,21 @@
 	<body>
 		<h2>Welcome to the Risk Profiler</h2>
 		<img src="/images/intro.png" class="center"/><br/>
+		<form id="uploadForm" method = "GET" action="uploadPage">
+			<input type = "submit" value = "Upload image of moles to help us to get a more accurate risk score in future." class="center"/>
+		</form>
+		<!-- <form method = "POST" action="showDiagram">
+			<input id="spf123" name="spf123" type="number" value="" min="1" max="10" required/>
+			<input type = "submit" value = "Show Diagram" />
+		</form> -->
 		<!-- <button id="continue" class="float-left submit-button" >continue</button> -->
-		<form method = "POST" action="survey" >
+		<form method = "POST" action="survey">
+		<!-- <form id="formid" method = "POST" action="survey" enctype="multipart/form-data"> -->
 			<fieldset>
 				<legend>Risk Profiler Survey</legend>
 
 				<!-- BREAK -->
+				
 				<h4>Your Name: <input type="text" name="voteName" placeholder="Enter your name..." required></h4>
 				<h4>1. Your Age:</h4>
 				<% for (var i = 0; i<age.length;i++){%>
@@ -145,14 +154,8 @@
 				<label>
 					<input type="radio" name="vote9" value= <%= i%> />
 					<%= moles[i]%>
-				</label> <br />
+				</label> <br /><br />
 				<% } %>
-				<!-- <h5>Image Upload</h5>
-				<input type="file" name="file" /><br /><br /> -->
-				<!-- BREAK -->
-				<!-- <label for="image">Upload Image</label>
-                <input type="file" id="image"
-                       name="image" value="" required> -->
 				<h4>13. How many freckles are on your body approximately?</h4>
 				<% for (var i = 0; i<freckles.length;i++){%>
 				<label>
@@ -161,8 +164,8 @@
 				</label> <br />
 				<% } %>
 
-				<h4>SPF: <input type="text" name="voteSPF" placeholder="Enter the SPF..." ></h4>
-				<br />
+				<h4>SPF: <input type="number" name="voteSPF" min="1" max="50" required></h4>
+
 				<input type = "submit" value = "Submit" />
 				<input type = "reset" value = "Clear" />
 			</fieldset>
