@@ -11,38 +11,29 @@ const { time } = require('console');
 
 
 module.exports.showForm = function(req, res) {
+
     regions = req.app.locals.regions;
-    res.render('survey.ejs', {regions: regions});
     latitude = req.app.locals.latitude;
-    res.render('survey.ejs', {latitude: latitude});
     hairColour = req.app.locals.hairColour;
-    res.render('survey.ejs', {hairColour: hairColour});
     skinType = req.app.locals.skinType;
-    res.render('survey.ejs', {skinType: skinType});
     skinCancer = req.app.locals.skinCancer;
-    res.render('survey.ejs', {skinCancer: skinCancer});
     familyHistory = req.app.locals.familyHistory;
-    res.render('survey.ejs', {familyHistory: familyHistory});
     personalHistory = req.app.locals.personalHistory;
-    res.render('survey.ejs', {personalHistory: personalHistory});
     sunburns = req.app.locals.sunburns;
-    res.render('survey.ejs', {sunburns: sunburns});
     eyeColour = req.app.locals.eyeColour;
-    res.render('survey.ejs', {eyeColour: eyeColour});
     moles = req.app.locals.moles;
-    res.render('survey.ejs', {moles: moles});
     freckles = req.app.locals.freckles;
-    res.render('survey.ejs', {freckles: freckles});
     age = req.app.locals.age;
-    res.render('survey.ejs', {age: age});
     gender = req.app.locals.gender;
-    res.render('survey.ejs', {gender: gender});
     risk_score = req.app.locals.risk_score;
-    res.render('survey.ejs', {risk_score: risk_score});
     userName = req.app.locals.userName;
-    res.render('survey.ejs', {userName: userName});
     SPF = req.app.locals.SPF;
-    res.render('survey.ejs', {SPF: SPF});
+
+    res.render('survey.ejs', {regions: regions,latitude: latitude,hairColour: hairColour,skinType: skinType,skinCancer: skinCancer,
+        familyHistory: familyHistory,personalHistory: personalHistory,
+        sunburns: sunburns,eyeColour: eyeColour,moles: moles,freckles: freckles,age: age,
+        gender: gender,risk_score: risk_score,userName: userName,SPF: SPF});
+
 };
 
 
