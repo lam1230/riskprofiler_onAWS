@@ -8,10 +8,14 @@
         div.preview-images > img {
           width: 30%;
         }
+        p.ex {
+          color: red;
+        }
       </style>
 </head>
 <body>
   <h5>This page is used to upload pictures of your moles. Your help can make our predictions more accurate in the future. Thank you for your cooperation.</h5>
+    <p class="ex">Warning: This function is not working on AWS server currently.</p>
     <form id="formid" method = "POST" action="upload" enctype="multipart/form-data">
         <div class="form-group">
             <input
