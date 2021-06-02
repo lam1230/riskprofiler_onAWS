@@ -345,7 +345,7 @@ module.exports.showResult = function(req, res) {
                                 ,hairColour: hairColour,vote2: voteIdx2,skinType: skinType,vote3: voteIdx3,skinCancer: skinCancer,vote4: voteIdx4,familyHistory: familyHistory,vote5: voteIdx5
                                 ,personalHistory: personalHistory,vote6: voteIdx6,sunburns: sunburns,vote7: voteIdx7,eyeColour: eyeColour,vote8: voteIdx8
                                 ,moles: moles,vote9: voteIdx9,freckles: freckles,vote10: voteIdx10,age: age,vote11: voteIdx11,gender1: gender1,vote12: voteIdx12
-                                ,risk_score: risk_score,vote13: numRisk,userName: userName,vote14: userName1
+                                ,risk_score: risk_score,vote13: numRisk,userName: voteIdxName,vote14: userName1
                                 ,SPF:voteIdxSPF
                                 ,newArray:docs,
                                 csvData:csvData,array1:array1,array2:array2,array3:array3
